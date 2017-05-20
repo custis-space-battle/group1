@@ -38,7 +38,7 @@ namespace Sharp_destroyer
             //подписка
             consumer.Received += (s,e) => ProcessIncomingMess(s,e,channel);
             //отправляем
-            channel.BasicPublish(_outQueue, _outQueue, null, Encoding.UTF8.GetBytes("start:BOT1"));
+            channel.BasicPublish(_outQueue, _outQueue, null, Encoding.UTF8.GetBytes("start:USUAL"));
             
             Console.ReadLine();
             //отписка, диспозим
@@ -80,7 +80,7 @@ namespace Sharp_destroyer
                             point = _enumerator.Current;
                         }
                         channel.BasicPublish(_outQueue, _outQueue, null, Encoding.UTF8.GetBytes(point.ToString()));
-                        Battleship.EnemyField[point.X, point.Y] = CellType.Hitted;
+                        //Battleship.EnemyField[point.X, point.Y] = CellType.Hitted;
                     }
                 }
                 
