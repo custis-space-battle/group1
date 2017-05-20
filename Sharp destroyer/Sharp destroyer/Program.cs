@@ -91,9 +91,10 @@ namespace Sharp_destroyer
                 Console.WriteLine(res);
                 if (res == "HIT")
                 {
-                    _lastHitPoint = point;
+                    Battleship.LastHitPoint = point;
+                    Battleship.LastHitStatus = "HIT";
                     Console.WriteLine("HITTED!!!!!!!!!!!!!");
-                    NextShootPoint = _battleShip.PointToHitWreckedShip(_lastHitPoint);
+                    NextShootPoint = Battleship.PointToHitWreckedShip(_lastHitPoint);
                     Console.WriteLine($"Next point to shoot {NextShootPoint.ToString()}");
                 }
 

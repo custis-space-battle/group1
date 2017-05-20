@@ -14,7 +14,7 @@ namespace Sharp_destroyer
         public static CellType[,] EnemyField = (CellType[,])Array.CreateInstance(typeof(CellType), new int[] { 10, 10 }, new int[] { 1, 1 });
         public static List<Point> WreckedShipPoints = new List<Point>();
         public static Point LastHitPoint;
-        public string LastHitStatus = "MISS";
+        public static string LastHitStatus = "MISS";
 
 
         Random r = new Random();
@@ -153,10 +153,10 @@ namespace Sharp_destroyer
             }
             else
             {
-                if (this.LastHitStatus == "MISS" || this.LastHitStatus == "KILL")
+                if (LastHitStatus == "MISS" || LastHitStatus == "KILL")
                 {
 
-                    if (this.LastHitStatus == "KILL")
+                    if (LastHitStatus == "KILL")
                     {
                         HitPointsAroundShip();
                         WreckedShipPoints.Clear();
@@ -213,7 +213,7 @@ namespace Sharp_destroyer
                         }
                     }
                 }
-                else if (this.LastHitStatus == "HIT")
+                else if (LastHitStatus == "HIT")
                 {
                     List<Point> pointsToMakeHitted = new List<Point>();
                     var x = Battleship.LastHitPoint.X;
