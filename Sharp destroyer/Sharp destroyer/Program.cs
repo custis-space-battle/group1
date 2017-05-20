@@ -75,7 +75,8 @@ namespace Sharp_destroyer
         Empty,
         Ship,
         Wreck,
-        Mine
+        Mine,
+        Hitted
     }
 
 }
