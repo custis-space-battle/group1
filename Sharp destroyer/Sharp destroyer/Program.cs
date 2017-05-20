@@ -70,7 +70,7 @@ namespace Sharp_destroyer
                 Console.WriteLine(res);
                 if (res == "HIT")
                 {
-                    _battleShip.
+                   // _battleShip.
                 }
 
             }
