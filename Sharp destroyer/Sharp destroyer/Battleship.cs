@@ -32,7 +32,6 @@ namespace Sharp_destroyer
 
         public string SetUpShips()
         {
-
             return "1,1; 1,1";
         }
         
@@ -96,7 +95,6 @@ namespace Sharp_destroyer
 
             else
             {
-
                 var p1 = WreckedShipPoints.Min(x => x.Y);
                 var p2 = WreckedShipPoints.Max(x => x.Y);
                 if (p1==p2)
@@ -196,6 +194,17 @@ namespace Sharp_destroyer
                 }
             }
         }
+
+        public static void HitPointsAroundShip(CellType[,] ListPoint)
+        {
+
+            foreach(var point in ListPoint)
+            {
+             //  EnemyField[ point] = CellType.Hitted;
+            }
+        }
+
+
     }
     public class Point
     {
