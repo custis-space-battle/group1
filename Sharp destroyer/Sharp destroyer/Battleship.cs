@@ -14,6 +14,7 @@ namespace Sharp_destroyer
         public CellType[,] EnemyField = (CellType[,])Array.CreateInstance(typeof(CellType), new int[] { 10, 10 }, new int[] { 1, 1 });
         public List<Point> WreckedShipPoints = new List<Point>();
         public Point LastHitPoint;
+        public string LastHitStatus;
 
         Random r = new Random();
 
@@ -73,23 +74,23 @@ namespace Sharp_destroyer
 
             else if (WreckedShipPoints.Count == 1)
             {
-                
-                //foreach (Point p in WreckedShipPoints)
-                //{
-                //    for (int i = -1; i < 1; i++)
-                //    {
-                //        for (int j = -1; j < 1; j++)
-                //        {
-                //            if (Math.Abs(i) != Math.Abs(j) && p.X + i <= 10 && p.X + i >= 1 && p.Y + j <= 10 && p.Y + j >= 1)
-                //            {
-                //                if (EnemyField[p.X + i, p.Y + j] == CellType.Empty)
-                //                {
-                //                    return new Point(p.X + i, p.Y + j);
-                //                }
-                //            }
-                //        }
-                //    }
-                //}
+
+                foreach (Point p in WreckedShipPoints)
+                {
+                    for (int i = -1; i < 1; i++)
+                    {
+                        for (int j = -1; j < 1; j++)
+                        {
+                            if (Math.Abs(i) != Math.Abs(j) && p.X + i <= 10 && p.X + i >= 1 && p.Y + j <= 10 && p.Y + j >= 1)
+                            {
+                                if (EnemyField[p.X + i, p.Y + j] == CellType.Empty)
+                                {
+                                    return new Point(p.X + i, p.Y + j);
+                                }
+                            }
+                        }
+                    }
+                }
             }
 
             else
@@ -133,7 +134,7 @@ namespace Sharp_destroyer
 
             return new Point(-1,-1);
         }
-        public IEnumerable<Point> GetPointToFireEvgeny(string lastHitStatus, Point lastHitPoint)
+        public IEnumerable<Point> GetPointToFireEvgeny()
         {
             if (SpecialEvent.Exist)
             {
@@ -141,7 +142,13 @@ namespace Sharp_destroyer
             }
             else
             {
-                if (lastHitStatus == "MISSED")
+                if (this.LastHitStatus == "KILL")
+                {
+                    Point.HitPointsAroundShip(EnemyField);
+                    this.LastHitStatus = 
+                    continue;
+                }
+                if (this.LastHitStatus == "MISS")
                 {
                     //Проходим вторую линию снизу вверх. j - x координата, i - у координата
                     for (int j = 1, i = 8; i > 0; j++, i--)
@@ -166,9 +173,24 @@ namespace Sharp_destroyer
                         yield return new Point(j, i);
                     }
                 }
-                else if (lastHitStatus == "HIT")
+                else if (this.LastHitStatus == "HIT")
                 {
-                     yield return PointToHitWreckedShip(lastHitPoint);
+                    List<Point> pointsToMakeHitted = new List<Point>();
+                    for (int i=0;i<4;i++)
+                    {
+                        if (this.LastHitPoint.IsInBorders())
+                        {
+                            pointsToMakeHitted.Add(this.LastHitPoint);
+                        }
+                    }
+                    Point.MakePointsHitted(this.EnemyField, pointsToMakeHitted);
+                     yield return PointToHitWreckedShip(this.LastHitPoint);
+                    LastHitStatus = "HIT";
+
+                }
+                else if (this.LastHitStatus == "KILL")
+                {
+
                 }
             }
         }
@@ -204,14 +226,21 @@ namespace Sharp_destroyer
             this.X = x;
             this.Y = y;
         }
+        public static void MakePointsHitted(CellType[,] enemyField, IEnumerable<Point> pointsToHit)
+        {
+            foreach (var point in pointsToHit)
+            {
+                enemyField[point.X, point.Y] = CellType.Hitted;
+            }
+        }
         public override string ToString()
         {
             return X.ToString() + "," + Y.ToString();
         }
         
-        public bool IsInBorders(Point p)
+        public bool IsInBorders()
         {
-           if(p.X >=1 & p.X <= 10 & p.Y >= 1 & p.Y <= 10)
+           if(this.X >=1 & this.X <= 10 & this.Y >= 1 & this.Y <= 10)
            {
                return true;
            }
