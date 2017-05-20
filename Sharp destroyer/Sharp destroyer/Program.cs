@@ -39,6 +39,23 @@ namespace Sharp_destroyer
         private static void ProcessIncomingMess(object sender, BasicDeliverEventArgs e)
         {
             Console.WriteLine(Encoding.UTF8.GetString(e.Body));
+            var message = Encoding.UTF8.GetString(e.Body);
+            if (message.Contains("prepare"))
+            {
+
+            }
+            else if (message.Contains("Error"))
+            {
+
+            }
+            else if (message.Contains("Warning"))
+            {
+
+            }
+            else if (message.Contains("Info"))
+            {
+
+            }
             //throw new NotImplementedException();
         }
     }
