@@ -19,7 +19,7 @@ namespace Sharp_destroyer
             var outQueue = "group1";
             channel.QueueDeclare(outQueue, exclusive: false);
 
-            channel.BasicPublish(outQueue, outQueue, null, Encoding.UTF8.GetBytes("start:self")); // отправляем
+             // отправляем
             Console.WriteLine("sended start:self");
             var consumer = new EventingBasicConsumer(channel);
             var incQueue = "to_group1";
@@ -28,17 +28,18 @@ namespace Sharp_destroyer
             channel.BasicConsume(incQueue, true, consumer);
             consumer.Received += ProcessIncomingMess;
 
+            channel.BasicPublish(outQueue, outQueue, null, Encoding.UTF8.GetBytes("start:SELF"));
+            Console.ReadLine();
+
             consumer.Received -= ProcessIncomingMess;
             connection?.Dispose();
             channel?.Dispose();
-
-            Console.ReadLine();
         }
 
         private static void ProcessIncomingMess(object sender, BasicDeliverEventArgs e)
         {
             Console.WriteLine(Encoding.UTF8.GetString(e.Body));
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
     }
 }
