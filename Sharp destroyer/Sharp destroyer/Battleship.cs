@@ -77,8 +77,10 @@ namespace Sharp_destroyer
 
             return null;
         }
-
-        
+        public IEnumerable<Point> GetPointToFireEvgeny(string lastHitStatus)
+        {
+            if (SpecialEvent.Exist)
+            {
 
             }
             else
