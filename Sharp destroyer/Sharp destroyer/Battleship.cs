@@ -12,7 +12,7 @@ namespace Sharp_destroyer
         public string SetUpShips()
         {
 
-            return "";
+            return "1,1; 1,1";
         }
 
 
