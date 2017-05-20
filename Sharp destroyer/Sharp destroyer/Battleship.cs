@@ -134,7 +134,7 @@ namespace Sharp_destroyer
 
             return new Point(-1,-1);
         }
-        public IEnumerable<Point> GetPointToFireEvgeny(string lastHitStatus)
+        public IEnumerable<Point> GetPointToFireEvgeny(string lastHitStatus, Point lastHitPoint)
         {
             if (SpecialEvent.Exist)
             {
