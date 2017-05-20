@@ -11,9 +11,9 @@ namespace Sharp_destroyer
     {
         //Массив начинающийся с индекса 1
         public CellType[,] OurField = (CellType[,])Array.CreateInstance(typeof(CellType), new int[] { 10, 10 }, new int[] { 1, 1 });
-        public CellType[,] EnemyField = (CellType[,])Array.CreateInstance(typeof(CellType), new int[] { 10, 10 }, new int[] { 1, 1 });
-        public List<Point> WreckedShipPoints = new List<Point>();
-        public Point LastHitPoint;
+        public static CellType[,] EnemyField = (CellType[,])Array.CreateInstance(typeof(CellType), new int[] { 10, 10 }, new int[] { 1, 1 });
+        public static List<Point> WreckedShipPoints = new List<Point>();
+        public static Point LastHitPoint;
         public string LastHitStatus;
 
         Random r = new Random();
@@ -144,7 +144,7 @@ namespace Sharp_destroyer
             {
                 if (this.LastHitStatus == "KILL")
                 {
-                    Point.HitPointsAroundShip(EnemyField);
+                    HitPointsAroundShip(EnemyField);
                     this.LastHitStatus = 
                     continue;
                 }
@@ -178,13 +178,13 @@ namespace Sharp_destroyer
                     List<Point> pointsToMakeHitted = new List<Point>();
                     for (int i=0;i<4;i++)
                     {
-                        if (this.LastHitPoint.IsInBorders())
+                        if (Battleship.LastHitPoint.IsInBorders())
                         {
-                            pointsToMakeHitted.Add(this.LastHitPoint);
+                            pointsToMakeHitted.Add(Battleship.LastHitPoint);
                         }
                     }
-                    Point.MakePointsHitted(this.EnemyField, pointsToMakeHitted);
-                     yield return PointToHitWreckedShip(this.LastHitPoint);
+                    Point.MakePointsHitted(Battleship.EnemyField, pointsToMakeHitted);
+                     yield return PointToHitWreckedShip(Battleship.LastHitPoint);
                     LastHitStatus = "HIT";
 
                 }
@@ -195,9 +195,9 @@ namespace Sharp_destroyer
             }
         }
 
-        public static void HitPointsAroundShip(List<Point> WreckedPoints, CellType[,] EnemyField)
+        public static void HitPointsAroundShip()
         {
-            foreach (Point p in WreckedPoints)
+            foreach (Point p in Battleship.WreckedShipPoints)
             {
                     for (int i = -1; i < 1; i++)
                     {
@@ -205,7 +205,7 @@ namespace Sharp_destroyer
                         {
                             if (p.X + i <= 10 && p.X + i >= 1 && p.Y + j <= 10 && p.Y + j >= 1)
                             {
-                                if (EnemyField[p.X + i, p.Y + j] == CellType.Empty)
+                                if (Battleship.EnemyField[p.X + i, p.Y + j] == CellType.Empty)
                                 {
                                     EnemyField[p.X + i, p.Y + j] = CellType.Empty;
                                 }
