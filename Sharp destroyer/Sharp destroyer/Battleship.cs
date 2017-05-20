@@ -44,32 +44,23 @@ namespace Sharp_destroyer
             int count = 0;
             var point = new Point(r.Next(1,10), r.Next(1, 10));
 
-            for (int i = 1; i <= 10; i++)
+            if (EnemyField[point.X, point.Y] == CellType.Hitted)
             {
-                for (int j = 1; j <= 10; j++)
+                count++;
+                if (count > 101)
                 {
-                    if (EnemyField[point.X, point.Y] == CellType.Hitted)
-                    {
-                        count++;
-                        if (count > 101)
-                        {
-                            return GetPointToFire();
-                        }
-                        else
-                        {
-                            return point;
-                        }
-                    }
-                    else
-                    {
-                        return point;
-                    }
-                    //Console.WriteLine($"Setted {i}, {j} as Empty");
+                    return GetPointToFire();
+                }
+                else
+                {
+                    return point;
                 }
             }
-            EnemyField[point.X, point.Y] = CellType.Hitted;
-
-            return point;
+            else
+            {
+                EnemyField[point.X, point.Y] = CellType.Hitted;
+                return point;
+            }
             //Массив начинающийся с индекса 1
         }
 
@@ -121,6 +112,22 @@ namespace Sharp_destroyer
                         return pt;
                     }
                 }
+                else
+                {
+                    var targetY = WreckedShipPoints.Min(x => x.Y);
+                    var targetX = WreckedShipPoints.Min(x => x.X);
+                    Point pt = new Point(targetX , targetY-1);
+                    if (EnemyField[pt.X, pt.Y] == CellType.Empty)
+                    {
+                        return pt;
+                    }
+                    else
+                    {
+                        targetY = WreckedShipPoints.Max(x => x.Y);
+                        pt = new Point(targetX, targetY+1);
+                        return pt;
+                    }
+                }
 
             }
 
@@ -162,7 +169,7 @@ namespace Sharp_destroyer
                 }
                 else if (lastHitStatus == "HIT")
                 {
-                    yield return PointToHitWreckedPoint(lastHitPoint);
+                     return PointToHitWreckedShip(lastHitPoint);
                 }
             }
         }
