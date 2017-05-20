@@ -177,7 +177,7 @@ namespace Sharp_destroyer
                 }
                 else if (lastHitStatus == "HIT")
                 {
-                     return PointToHitWreckedPoint(lastHitPoint);
+                     return PointToHitWreckedShip(lastHitPoint);
                 }
             }
         }
