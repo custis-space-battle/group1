@@ -8,5 +8,11 @@ namespace Sharp_destroyer
 {
     class Battleship
     {
+        public void SetUpShips()
+        {
+
+        }
+
+
     }
 }
