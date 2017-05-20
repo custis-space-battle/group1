@@ -8,9 +8,9 @@ namespace Sharp_destroyer
 {
     class Battleship
     {
-        public void SetUpShips()
+        public bool SetUpShips()
         {
-
+            return true;
         }
 
 
