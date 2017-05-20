@@ -173,8 +173,6 @@ namespace Sharp_destroyer
                 }
             }
         }
-
-
     }
     public class Point
     {
