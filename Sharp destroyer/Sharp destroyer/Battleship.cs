@@ -174,13 +174,15 @@ namespace Sharp_destroyer
                             yield return new Point(j, i);
                         else continue;
                     }
-                    //
-                    for (int j = 7, i = 7; i > 6; j++, i--)
+                    //Обработка жёлтых диагоналей
+                    for (int j = 1;j<=10;j= j+4)
                     {
-                        if (EnemyField[j, i] == CellType.Empty)
+                        for (int i = 2;i>=10; i= i+4)
+                        {
                             yield return new Point(j, i);
-                        else continue;
+                        }
                     }
+                    
                 }
                 else if (this.LastHitStatus == "HIT")
                 {
