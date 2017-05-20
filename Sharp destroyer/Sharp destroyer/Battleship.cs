@@ -181,6 +181,22 @@ namespace Sharp_destroyer
                             yield return new Point(j, i);
                         else continue;
                     }
+                    // Добиваем не пройденные точки
+                    for (int i = 1; i <= 10; i++)
+                    {
+                        for (int j = 1; j <= 10; j++)
+                        {
+                            if (EnemyField[i, j] == CellType.Empty)
+                            {
+                                EnemyField[i, j] = CellType.Hitted;
+                                yield return new Point(j, i);
+                            }
+                            
+                            //Console.WriteLine($"Setted {i}, {j} as Empty");
+                        }
+                    }
+
+                    
                 }
                 else if (this.LastHitStatus == "HIT")
                 {
