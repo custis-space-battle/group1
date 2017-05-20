@@ -66,8 +66,9 @@ namespace Sharp_destroyer
                     var enumerator = _battleShip.GetPointToFireEvgeny().GetEnumerator();
                     if (enumerator.MoveNext())
                         point = enumerator.Current;
+                               channel.BasicPublish(_outQueue, _outQueue, null, Encoding.UTF8.GetBytes(point.ToString()));
+
                 }
-                channel.BasicPublish(_outQueue, _outQueue, null, Encoding.UTF8.GetBytes(point.ToString()));
             }
             else if (message.Contains("fire result"))
             {
@@ -114,7 +115,7 @@ namespace Sharp_destroyer
     }
     public static class SpecialEvent
     {
-        public static bool Exist { get; set; } = false;
+        public static bool Exist { get; set;} = false;
         public static SpecialCondition Condition { get; set; }
     }
     public enum SpecialCondition
