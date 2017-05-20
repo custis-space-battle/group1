@@ -187,17 +187,56 @@ namespace Sharp_destroyer
                             yield return new Point(j, i);
                         else continue;
                     }
+                    //Обработка жёлтых диагоналей
+                    for (int j = 1;j<=10;j= j+4)
+                    {
+                        for (int i = 2;i>=10; i= i+4)
+                        {
+                            yield return new Point(j, i);
+                        }
+                    }
+                    // Добиваем не пройденные точки
+                    for (int i = 1; i <= 10; i++)
+                    {
+                        for (int j = 1; j <= 10; j++)
+                        {
+                            if (EnemyField[i, j] == CellType.Empty)
+                            {
+                                EnemyField[i, j] = CellType.Hitted;
+                                yield return new Point(j, i);
+                            }
+                            
+                            //Console.WriteLine($"Setted {i}, {j} as Empty");
+                        }
+                    }
                 }
                 else if (this.LastHitStatus == "HIT")
                 {
                     List<Point> pointsToMakeHitted = new List<Point>();
-                    for (int i=0;i<4;i++)
+                    var x = Battleship.LastHitPoint.X;
+                    var y = Battleship.LastHitPoint.Y;
+                    Point pointToMakeHitted;
+                    for (int j= -1;j<=1;j=j+2)
                     {
-                        if (Battleship.LastHitPoint.IsInBorders())
+                        for (int i = -1; i <= 1; i = i + 2)
                         {
-                            pointsToMakeHitted.Add(Battleship.LastHitPoint);
+                            if ((pointToMakeHitted = new Point(x,y)).IsInBorders())
+                            {
+                                pointsToMakeHitted.Add(pointToMakeHitted);
+                            }
                         }
                     }
+                    //var pointToMakeHitted = new Point(x - 1, y + 1);
+                    //if (pointToMakeHitted.IsInBorders())
+                    //    pointsToMakeHitted.Add(pointToMakeHitted);
+                    //pointToMakeHitted = new Point(Battleship.LastHitPoint.)
+                    //for (int i=0;i<4;i++)
+                    //{
+                    //    if (Battleship.LastHitPoint.IsInBorders())
+                    //    {
+                    //        pointsToMakeHitted.Add(Battleship.LastHitPoint);
+                    //    }
+                    //}
                     Point.MakePointsHitted(Battleship.EnemyField, pointsToMakeHitted);
                      yield return PointToHitWreckedShip(Battleship.LastHitPoint);
                     LastHitStatus = "HIT";
