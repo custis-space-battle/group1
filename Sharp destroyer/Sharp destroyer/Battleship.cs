@@ -63,6 +63,7 @@ namespace Sharp_destroyer
             }
             //Массив начинающийся с индекса 1
         }
+        
 
         public Point PointToHitWreckedShip(Point LastHit)
         {
@@ -188,6 +189,18 @@ namespace Sharp_destroyer
         public override string ToString()
         {
             return X.ToString() + "," + Y.ToString();
+        }
+        
+        public bool IsInBorders(Point p)
+        {
+           if(p.X >=1 & p.X <= 10 & p.Y >= 1 & p.Y <= 10)
+           {
+               return true;
+           }
+           else
+           {
+               return false;
+           }
         }
 
     }
