@@ -12,6 +12,7 @@ namespace Sharp_destroyer
         //Массив начинающийся с индекса 1
         public CellType[,] OurField = (CellType[,])Array.CreateInstance(typeof(CellType), new int[] { 10, 10 }, new int[] { 1, 1 });
         public CellType[,] EnemyField = (CellType[,])Array.CreateInstance(typeof(CellType), new int[] { 10, 10 }, new int[] { 1, 1 });
+        public List<Point> WreckedShipPoints = new List<Point>();
 
         Random r = new Random();
 
@@ -69,8 +70,14 @@ namespace Sharp_destroyer
 
             return point;
             //Массив начинающийся с индекса 1
-            
         }
+
+        public Point PointToHitWreckedShip(Point LastHit)
+        {
+
+            return null;
+        }
+
         
 
 

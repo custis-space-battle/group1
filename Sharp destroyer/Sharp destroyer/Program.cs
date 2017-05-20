@@ -51,12 +51,12 @@ namespace Sharp_destroyer
                 Console.WriteLine("Setting Ships");
                 channel.BasicPublish(_outQueue, _outQueue, null, Encoding.UTF8.GetBytes(_battleShip.SetUpShips()));
             }
-            else if (message.Contains("fire") && !message.Contains("result") && !message.Contains("winner"))
+            else if (message == "fire!")
             {
                 var point = _battleShip.GetPointToFire();
                 channel.BasicPublish(_outQueue, _outQueue, null, Encoding.UTF8.GetBytes(point.ToString()));
             }
-            else if (message.Contains("fire result"))
+            else if (message=="fire result")
             {
                 var res = FireResult.Values.First(x => message.Contains(x));
                 Console.WriteLine(res);
@@ -76,7 +76,7 @@ namespace Sharp_destroyer
             }
             else if (message.Contains("winner"))
             {
-                Console.ReadLine();
+                //Console.ReadLine();
                 //return;
             }
             //throw new NotImplementedException();
