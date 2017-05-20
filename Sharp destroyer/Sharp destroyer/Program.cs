@@ -62,7 +62,7 @@ namespace Sharp_destroyer
                 }
                 else
                 {
-                    point = _battleShip.GetPointToFireEvgeny(.GetPointToFire();
+                    point = _battleShip.GetPointToFireEvgeny();
                 }
                 channel.BasicPublish(_outQueue, _outQueue, null, Encoding.UTF8.GetBytes(point.ToString()));
             }
