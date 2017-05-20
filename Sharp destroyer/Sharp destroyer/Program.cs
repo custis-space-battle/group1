@@ -10,49 +10,49 @@ namespace Sharp_destroyer
 {
     class Program
     {
+        public static Battleship _battleShip = new Battleship();
+        public static string _outQueue = "group1";
+        public static string _incQueue = "to_group1";
         static void Main(string[] args)
         {
-            var battleship = new Battleship();
-
             Console.WriteLine("Hello world");
             //устанавливаем соединение
             var connFactory = new ConnectionFactory { Uri = "amqp://group1:F3pgbj@91.241.45.69/debug" };
             var connection = connFactory.CreateConnection();
             var channel = connection.CreateModel();
             //настраиваем
-            var outQueue = "group1";
-            channel.QueueDeclare(outQueue, exclusive: false);
+            channel.QueueDeclare(_outQueue, exclusive: false);
 
             //конфигурируем для входищих
             var consumer = new EventingBasicConsumer(channel);
-            var incQueue = "to_group1";
-            channel.QueueDeclare(incQueue, exclusive: false);
-            channel.QueueBind(incQueue, incQueue, incQueue);
-            channel.BasicConsume(incQueue, true, consumer);
+            channel.QueueDeclare(_incQueue, exclusive: false);
+            channel.QueueBind(_incQueue, _incQueue, _incQueue);
+            channel.BasicConsume(_incQueue, true, consumer);
             //подписка
-            consumer.Received += ProcessIncomingMess;
+            consumer.Received += (s,e) =>   ProcessIncomingMess(s,e,channel);
             //отправляем
-            channel.BasicPublish(outQueue, outQueue, null, Encoding.UTF8.GetBytes("start:SELF"));
+            channel.BasicPublish(_outQueue, _outQueue, null, Encoding.UTF8.GetBytes("start:SELF"));
 
 
             //расстановка
             Console.WriteLine("Setting Ships");
-            channel.BasicPublish(outQueue, outQueue, null, Encoding.UTF8.GetBytes(battleship.SetUpShips()));
+            channel.BasicPublish(_outQueue, _outQueue, null, Encoding.UTF8.GetBytes(_battleShip.SetUpShips()));
 
             Console.ReadLine();
             //отписка, диспозим
-            consumer.Received -= ProcessIncomingMess;
+            //consumer.Received -= ProcessIncomingMess;
             connection?.Dispose();
             channel?.Dispose();
         }
 
-        private static void ProcessIncomingMess(object sender, BasicDeliverEventArgs e)
+        private static void ProcessIncomingMess(object sender, BasicDeliverEventArgs e, IModel channel)
         {
             Console.WriteLine(Encoding.UTF8.GetString(e.Body));
             var message = Encoding.UTF8.GetString(e.Body);
             if (message.Contains("prepare"))
             {
-
+                var point = _battleShip.GetPointToFire();
+                channel.BasicPublish(_outQueue, _outQueue, null, Encoding.UTF8.GetBytes(point.ToString()));
             }
             else if (message.Contains("Error"))
             {
