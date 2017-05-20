@@ -31,7 +31,6 @@ namespace Sharp_destroyer
 
         public string SetUpShips()
         {
-
             return "1,1; 1,1";
         }
         
@@ -95,7 +94,6 @@ namespace Sharp_destroyer
 
             else
             {
-
                 var p1 = WreckedShipPoints.Min(x => x.Y);
                 var p2 = WreckedShipPoints.Max(x => x.Y);
                 if (p1==p2)
