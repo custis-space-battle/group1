@@ -191,8 +191,6 @@ namespace Sharp_destroyer
                                 EnemyField[i, j] = CellType.Hitted;
                                 yield return new Point(j, i);
                             }
-                            
-                            //Console.WriteLine($"Setted {i}, {j} as Empty");
                         }
                     }
 
