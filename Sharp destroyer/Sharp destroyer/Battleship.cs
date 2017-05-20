@@ -14,7 +14,7 @@ namespace Sharp_destroyer
         public string SetUpShips()
         {
 
-            return "1,2";
+            return "1,1; 1,1";
         }
         public Point PointToFire()
         {
