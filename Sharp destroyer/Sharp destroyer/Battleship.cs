@@ -14,7 +14,7 @@ namespace Sharp_destroyer
         public static CellType[,] EnemyField = (CellType[,])Array.CreateInstance(typeof(CellType), new int[] { 10, 10 }, new int[] { 1, 1 });
         public static List<Point> WreckedShipPoints = new List<Point>();
         public static Point LastHitPoint;
-        public string LastHitStatus;
+        public string LastHitStatus = "MISS";
 
         Random r = new Random();
 
