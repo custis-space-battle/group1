@@ -15,6 +15,8 @@ namespace Sharp_destroyer
         public static string _incQueue = "to_group1";
         public static Point _lastHitPoint = null;
         public static IEnumerator<Point> _enumerator;
+        public static Point NextShootPoint;
+        public static Point point = null;
 
         static void Main(string[] args)
         {
@@ -49,6 +51,7 @@ namespace Sharp_destroyer
         {
             Console.WriteLine(Encoding.UTF8.GetString(e.Body));
             var message = Encoding.UTF8.GetString(e.Body);
+           
             //Console.WriteLine("MESSAGE IS " + message);
             if (message.Contains("prepare"))
             {
@@ -58,19 +61,26 @@ namespace Sharp_destroyer
             }
             else if (message.Contains("fire!"))
             {
-                Point point = null;
+                
                 if (SpecialEvent.Exist)
                 {
 
                 }
                 else
                 {
-
                     //var enumerator = _battleShip.GetPointToFireEvgeny().GetEnumerator();
                     if (_enumerator.MoveNext())
                     {
-                        point = _enumerator.Current;
+                        if (NextShootPoint != null && NextShootPoint!=point)
+                        {
+                            point = NextShootPoint;
+                        }
+                        else
+                        {
+                            point = _enumerator.Current;
+                        }
                         channel.BasicPublish(_outQueue, _outQueue, null, Encoding.UTF8.GetBytes(point.ToString()));
+                        Battleship.EnemyField[point.X, point.Y] = CellType.Hitted;
                     }
                 }
                 
@@ -81,7 +91,10 @@ namespace Sharp_destroyer
                 Console.WriteLine(res);
                 if (res == "HIT")
                 {
-                    _battleShip.PointToHitWreckedShip(_lastHitPoint);
+                    _lastHitPoint = point;
+                    Console.WriteLine("HITTED!!!!!!!!!!!!!");
+                    NextShootPoint = _battleShip.PointToHitWreckedShip(_lastHitPoint);
+                    Console.WriteLine($"Next point to shoot {NextShootPoint.ToString()}");
                 }
 
             }

@@ -67,6 +67,12 @@ namespace Sharp_destroyer
 
         public Point PointToHitWreckedShip(Point LastHit)
         {
+            if (LastHit!=null)
+            {
+                WreckedShipPoints.Add(LastHit);
+            }
+            
+
             if (WreckedShipPoints.Count == 0)
             {
                 return null;
@@ -74,12 +80,12 @@ namespace Sharp_destroyer
 
             else if (WreckedShipPoints.Count == 1)
             {
-
                 foreach (Point p in WreckedShipPoints)
                 {
-                    for (int i = -1; i < 1; i++)
+                    
+                    for (int i = -1; i <= 1; i++)
                     {
-                        for (int j = -1; j < 1; j++)
+                        for (int j = -1; j <= 1; j++)
                         {
                             if (Math.Abs(i) != Math.Abs(j) && p.X + i <= 10 && p.X + i >= 1 && p.Y + j <= 10 && p.Y + j >= 1)
                             {
@@ -117,16 +123,20 @@ namespace Sharp_destroyer
                     var targetY = WreckedShipPoints.Min(x => x.Y);
                     var targetX = WreckedShipPoints.Min(x => x.X);
                     Point pt = new Point(targetX , targetY-1);
-                    if (EnemyField[pt.X, pt.Y] == CellType.Empty)
+                    if (pt.X<=10 && pt.X>=1 && pt.Y>=1 && pt.Y<=10)
                     {
-                        return pt;
+                        if (EnemyField[pt.X, pt.Y] == CellType.Empty)
+                        {
+                            return pt;
+                        }
+                        else
+                        {
+                            targetY = WreckedShipPoints.Max(x => x.Y);
+                            pt = new Point(targetX, targetY + 1);
+                            return pt;
+                        }
                     }
-                    else
-                    {
-                        targetY = WreckedShipPoints.Max(x => x.Y);
-                        pt = new Point(targetX, targetY+1);
-                        return pt;
-                    }
+                    
                 }
 
             }
@@ -145,7 +155,10 @@ namespace Sharp_destroyer
                 if (this.LastHitStatus == "MISS" || this.LastHitStatus == "KILL")
                 {
                     if (this.LastHitStatus == "KILL")
+                    {
                         HitPointsAroundShip();
+                        WreckedShipPoints.Clear();
+                    }
                     //Проходим вторую линию снизу вверх. j - x координата, i - у координата
                     for (int j = 1, i = 8; i > 0; j++, i--)
                     {
