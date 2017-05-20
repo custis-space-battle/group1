@@ -12,6 +12,7 @@ namespace Sharp_destroyer
         //Массив начинающийся с индекса 1
         public CellType[,] OurField = (CellType[,])Array.CreateInstance(typeof(CellType), new int[] { 10, 10 }, new int[] { 1, 1 });
         public CellType[,] EnemyField = (CellType[,])Array.CreateInstance(typeof(CellType), new int[] { 10, 10 }, new int[] { 1, 1 });
+        public List<Point> WreckedShipPoints = new List<Point>();
 
         Random r = new Random();
 
@@ -42,35 +43,32 @@ namespace Sharp_destroyer
             int count = 0;
             var point = new Point(r.Next(1,10), r.Next(1, 10));
 
-            for (int i = 1; i <= 10; i++)
+            if (EnemyField[point.X, point.Y] == CellType.Hitted)
             {
-                for (int j = 1; j <= 10; j++)
+                count++;
+                if (count > 101)
                 {
-                    if (EnemyField[point.X, point.Y] == CellType.Hitted)
-                    {
-                        count++;
-                        if (count > 101)
-                        {
-                            return GetPointToFire();
-                        }
-                        else
-                        {
-                            return point;
-                        }
-                    }
-                    else
-                    {
-                        EnemyField[point.X, point.Y] = CellType.Hitted;
-                        return point;
-                    }
-                    //Console.WriteLine($"Setted {i}, {j} as Empty");
+                    return GetPointToFire();
+                }
+                else
+                {
+                    return point;
                 }
             }
-
-            return point;
+            else
+            {
+                EnemyField[point.X, point.Y] = CellType.Hitted;
+                return point;
+            }
             //Массив начинающийся с индекса 1
-            
         }
+
+        public Point PointToHitWreckedShip(Point LastHit)
+        {
+
+            return null;
+        }
+
         
 
 
@@ -79,7 +77,7 @@ namespace Sharp_destroyer
     {
         public int X { get; set; }
         public int Y { get; set; }
-        public Point(int x, int y)
+        public Point (int x, int y)
         {
             this.X = x;
             this.Y = y;
