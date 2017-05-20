@@ -42,4 +42,15 @@ namespace Sharp_destroyer
             //throw new NotImplementedException();
         }
     }
+    public enum CellType
+    {
+        Empty,
+        Ship,
+        Wreck,
+        Mine
+    }
+    public class BattleShip
+    {
+        public CellType[,] OurField = new CellType[10,10];
+    }
 }
