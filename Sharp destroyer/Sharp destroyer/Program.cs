@@ -18,8 +18,9 @@ namespace Sharp_destroyer
             var channel = connection.CreateModel();
             var outQueue = "group1";
             channel.QueueDeclare(outQueue, exclusive: false);
-            // channel.BasicPublish(outQueue, outQueue, null, new Byte = { 1, 1}); // отправляем
 
+            channel.BasicPublish(outQueue, outQueue, null, Encoding.UTF8.GetBytes("start:self")); // отправляем
+            Console.WriteLine("sended start:self");
             var consumer = new EventingBasicConsumer(channel);
             var incQueue = "to_group1";
             channel.QueueDeclare(incQueue, exclusive: false);
