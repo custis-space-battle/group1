@@ -16,6 +16,7 @@ namespace Sharp_destroyer
         public static Point LastHitPoint;
         public string LastHitStatus = "MISS";
 
+
         Random r = new Random();
 
         public Battleship()
