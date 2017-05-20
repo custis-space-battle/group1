@@ -32,7 +32,7 @@ namespace Sharp_destroyer
             //подписка
             consumer.Received += (s,e) =>   ProcessIncomingMess(s,e,channel);
             //отправляем
-            channel.BasicPublish(_outQueue, _outQueue, null, Encoding.UTF8.GetBytes("start:SELF"));
+            channel.BasicPublish(_outQueue, _outQueue, null, Encoding.UTF8.GetBytes("start:BOT1"));
 
             Console.ReadLine();
             //отписка, диспозим
@@ -53,13 +53,20 @@ namespace Sharp_destroyer
             }
             else if (message.Contains("fire") && !message.Contains("result"))
             {
-                
                 var point = _battleShip.GetPointToFire();
                 channel.BasicPublish(_outQueue, _outQueue, null, Encoding.UTF8.GetBytes(point.ToString()));
             }
             else if (message.Contains("fire result"))
             {
                 var res = FireResult.Values.First(x => message.Contains(x));
+                switch (res)
+                {
+                    //case "HIT":
+                    //    var point = _battleShip.GetPointToFire();
+                    //    channel.BasicPublish(_outQueue, _outQueue, null, Encoding.UTF8.GetBytes(point.ToString()));
+                    //    break;
+
+                }
                 Console.WriteLine(res);
 
             }

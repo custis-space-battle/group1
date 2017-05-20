@@ -60,12 +60,12 @@ namespace Sharp_destroyer
                     }
                     else
                     {
+                        EnemyField[point.X, point.Y] = CellType.Hitted;
                         return point;
                     }
                     //Console.WriteLine($"Setted {i}, {j} as Empty");
                 }
             }
-            EnemyField[point.X, point.Y] = CellType.Hitted;
 
             return point;
             //Массив начинающийся с индекса 1
