@@ -62,7 +62,7 @@ namespace Sharp_destroyer
                 }
                 else
                 {
-                    point = _battleShip.GetPointToFire();
+                    point = _battleShip.GetPointToFireEvgeny(.GetPointToFire();
                 }
                 channel.BasicPublish(_outQueue, _outQueue, null, Encoding.UTF8.GetBytes(point.ToString()));
             }
@@ -111,7 +111,7 @@ namespace Sharp_destroyer
     }
     public static class SpecialEvent
     {
-        public static bool Exist { get; set; }
+        public static bool Exist { get; set; } = false;
         public static SpecialCondition Condition { get; set; }
     }
     public enum SpecialCondition

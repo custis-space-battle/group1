@@ -134,7 +134,7 @@ namespace Sharp_destroyer
 
             return new Point(-1,-1);
         }
-        public IEnumerable<Point> GetPointToFireEvgeny(string lastHitStatus, Point lastHitPoint)
+        public IEnumerable<Point> GetPointToFireEvgeny(CellType[,] enemyField, string lastHitStatus, Point lastHitPoint)
         {
             if (SpecialEvent.Exist)
             {
@@ -142,7 +142,7 @@ namespace Sharp_destroyer
             }
             else
             {
-                if (lastHitStatus == "MISSED")
+                if (lastHitStatus == "MISS")
                 {
                     //Проходим вторую линию снизу вверх. j - x координата, i - у координата
                     for (int j = 1, i = 8; i > 0; j++, i--)
@@ -169,6 +169,15 @@ namespace Sharp_destroyer
                 }
                 else if (lastHitStatus == "HIT")
                 {
+                    List<Point> pointsToMakeHitted = new List<Point>();
+                    for (int i=0;i<4;i++)
+                    {
+                        if (lastHitPoint.IsInBorders())
+                        {
+                            pointsToMakeHitted.Add(lastHitPoint);
+                        }
+                    }
+                    Point.MakePointsHitted(enemyField, pointsToMakeHitted);
                      yield return PointToHitWreckedShip(lastHitPoint);
                 }
             }
@@ -184,6 +193,13 @@ namespace Sharp_destroyer
         {
             this.X = x;
             this.Y = y;
+        }
+        public static void MakePointsHitted(CellType[,] enemyField, IEnumerable<Point> pointsToHit)
+        {
+            foreach (var point in pointsToHit)
+            {
+                enemyField[point.X, point.Y] = CellType.Hitted;
+            }
         }
         public override string ToString()
         {
