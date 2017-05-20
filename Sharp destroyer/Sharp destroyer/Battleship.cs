@@ -172,6 +172,17 @@ namespace Sharp_destroyer
                 }
             }
         }
+
+        public static void HitPointsAroundShip(CellType[,] ListPoint)
+        {
+
+            foreach(var point in ListPoint)
+            {
+             //  EnemyField[ point] = CellType.Hitted;
+            }
+        }
+
+
     }
     public class Point
     {
