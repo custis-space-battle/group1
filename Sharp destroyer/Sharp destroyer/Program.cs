@@ -17,6 +17,7 @@ namespace Sharp_destroyer
         public static IEnumerator<Point> _enumerator;
         public static Point NextShootPoint;
         public static Point point = null;
+        public 
 
         static void Main(string[] args)
         {
@@ -38,8 +39,9 @@ namespace Sharp_destroyer
             //подписка
             consumer.Received += (s,e) => ProcessIncomingMess(s,e,channel);
             //отправляем
-            channel.BasicPublish(_outQueue, _outQueue, null, Encoding.UTF8.GetBytes("start:BOT1"));
+            channel.BasicPublish(_outQueue, _outQueue, null, Encoding.UTF8.GetBytes("start: BOT1"));
             
+
             Console.ReadLine();
             //отписка, диспозим
             //consumer.Received -= ProcessIncomingMess;
@@ -71,31 +73,48 @@ namespace Sharp_destroyer
                     //var enumerator = _battleShip.GetPointToFireEvgeny().GetEnumerator();
                     if (_enumerator.MoveNext())
                     {
-                        if (NextShootPoint != null && NextShootPoint!=point)
-                        {
-                            point = NextShootPoint;
-                        }
-                        else
-                        {
+                        //if (NextShootPoint != null && NextShootPoint!=point)
+                        //{
+                        //    point = NextShootPoint;
+                        //}
+                        //else
+                        //{
                             point = _enumerator.Current;
-                        }
+                        //}
+                        Battleship.LastHitPoint = point;
                         channel.BasicPublish(_outQueue, _outQueue, null, Encoding.UTF8.GetBytes(point.ToString()));
-                        Battleship.EnemyField[point.X, point.Y] = CellType.Hitted;
+                        //Battleship.EnemyField[point.X, point.Y] = CellType.Hitted;
                     }
                 }
                 
             }
             else if (message.Contains("fire result"))
             {
+                
                 var res = FireResult.Values.First(x => message.Contains(x));
-                Console.WriteLine(res);
-                if (res == "HIT")
+                //_battleShip.LastHitStatus = res;
+                if (_battleShip.LastHitStatus == "HIT" && res == "MISS")
                 {
-                    _lastHitPoint = point;
-                    Console.WriteLine("HITTED!!!!!!!!!!!!!");
-                    NextShootPoint = _battleShip.PointToHitWreckedShip(_lastHitPoint);
-                    Console.WriteLine($"Next point to shoot {NextShootPoint.ToString()}");
+                    _battleShip.LastHitStatus = "HIT";
                 }
+                else if (res == "KILL")
+                {
+                    _battleShip.LastHitStatus = "MISS";
+                }
+                else if (res == "HIT")
+                {
+                    _battleShip.LastHitStatus = "HIT";
+                    _lastHitPoint = Battleship.PointToHitWreckedShip(_lastHitPoint); 
+                }
+
+                //Console.WriteLine(res);
+                //if (res == "HIT")
+                //{
+                //    _lastHitPoint = point;
+                //    Console.WriteLine("HITTED!!!!!!!!!!!!!");
+                //    NextShootPoint = _battleShip.PointToHitWreckedShip(_lastHitPoint);
+                //    Console.WriteLine($"Next point to shoot {NextShootPoint.ToString()}");
+                //}
 
             }
             else if (message.Contains("Error"))
@@ -112,6 +131,16 @@ namespace Sharp_destroyer
             }
             else if (message.Contains("winner"))
             {
+                _battleShip = new Battleship();
+                for (int i = 1; i <= 10; i++)
+                {
+                    for (int j = 1; j <= 10; j++)
+                    {
+                        Battleship.EnemyField[i, j] = CellType.Empty;
+                        //Console.WriteLine($"Setted {i}, {j} as Empty");
+                    }
+                }
+                channel.BasicPublish(_outQueue, _outQueue, null, Encoding.UTF8.GetBytes("start: BOT1"));
                 //Console.ReadLine();
                 //return;
             }
