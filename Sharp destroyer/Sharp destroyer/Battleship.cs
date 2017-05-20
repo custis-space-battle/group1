@@ -120,6 +120,22 @@ namespace Sharp_destroyer
                         return pt;
                     }
                 }
+                else
+                {
+                    var targetY = WreckedShipPoints.Min(x => x.Y);
+                    var targetX = WreckedShipPoints.Min(x => x.X);
+                    Point pt = new Point(targetX , targetY-1);
+                    if (EnemyField[pt.X, pt.Y] == CellType.Empty)
+                    {
+                        return pt;
+                    }
+                    else
+                    {
+                        targetY = WreckedShipPoints.Max(x => x.Y);
+                        pt = new Point(targetX, targetY+1);
+                        return pt;
+                    }
+                }
 
             }
 
@@ -161,7 +177,7 @@ namespace Sharp_destroyer
                 }
                 else if (lastHitStatus == "HIT")
                 {
-                    yield return PointToHitWreckedPoint(lastHitPoint);
+                     return PointToHitWreckedPoint(lastHitPoint);
                 }
             }
         }
