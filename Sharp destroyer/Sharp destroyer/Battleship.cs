@@ -32,15 +32,15 @@ namespace Sharp_destroyer
             return "1,1; 1,1";
         }
         
-        public Point GetPointToFire(string status)
+        public Point GetPointToFire(string status = "")
         {
             //обработка строки
-            var splitted = status.Split(new char[] { ':' });
+            //var splitted = status.Split(new char[] { ':' });
 
             //рандом
             var point = new Point(r.Next(1,10), r.Next(1, 10));
 
-            return new Point(1,1);
+            return point;
             //Массив начинающийся с индекса 1
             
         }

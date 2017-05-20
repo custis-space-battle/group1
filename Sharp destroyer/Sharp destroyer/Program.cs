@@ -31,12 +31,10 @@ namespace Sharp_destroyer
             //подписка
             consumer.Received += (s,e) =>   ProcessIncomingMess(s,e,channel);
             //отправляем
-            channel.BasicPublish(_outQueue, _outQueue, null, Encoding.UTF8.GetBytes("start:SELF"));
+            channel.BasicPublish(_outQueue, _outQueue, null, Encoding.UTF8.GetBytes("start:BOT1"));
 
 
-            //расстановка
-            Console.WriteLine("Setting Ships");
-            channel.BasicPublish(_outQueue, _outQueue, null, Encoding.UTF8.GetBytes(_battleShip.SetUpShips()));
+            
 
             Console.ReadLine();
             //отписка, диспозим
@@ -49,14 +47,23 @@ namespace Sharp_destroyer
         {
             Console.WriteLine(Encoding.UTF8.GetString(e.Body));
             var message = Encoding.UTF8.GetString(e.Body);
+            Console.WriteLine("MESSAGE IS " + message);
             if (message.Contains("prepare"))
             {
+                //расстановка
+                Console.WriteLine("Setting Ships");
+                channel.BasicPublish(_outQueue, _outQueue, null, Encoding.UTF8.GetBytes(_battleShip.SetUpShips()));
+            }
+            else if (message.Contains("fire") && !message.Contains("result"))
+            {
+                
                 var point = _battleShip.GetPointToFire();
                 channel.BasicPublish(_outQueue, _outQueue, null, Encoding.UTF8.GetBytes(point.ToString()));
             }
             else if (message.Contains("fire result"))
             {
                 var res = FireResult.Values.First(x => message.Contains(x));
+                Console.WriteLine(res);
 
             }
             else if (message.Contains("Error"))
@@ -70,6 +77,11 @@ namespace Sharp_destroyer
             else if (message.Contains("Info"))
             {
 
+            }
+            else if (message.Contains("winner"))
+            {
+                Console.ReadLine();
+                return;
             }
             //throw new NotImplementedException();
         }
