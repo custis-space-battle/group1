@@ -142,14 +142,10 @@ namespace Sharp_destroyer
             }
             else
             {
-                if (this.LastHitStatus == "KILL")
+                if (this.LastHitStatus == "MISS" || this.LastHitStatus == "KILL")
                 {
-                    HitPointsAroundShip(EnemyField);
-                    this.LastHitStatus = 
-                    continue;
-                }
-                if (this.LastHitStatus == "MISS")
-                {
+                    if (this.LastHitStatus == "KILL")
+                        HitPointsAroundShip();
                     //Проходим вторую линию снизу вверх. j - x координата, i - у координата
                     for (int j = 1, i = 8; i > 0; j++, i--)
                     {
@@ -160,17 +156,23 @@ namespace Sharp_destroyer
                     //Большая правая линия
                     for (int j = 3, i = 10; i > 2; j++, i--)
                     {
-                        yield return new Point(j, i);
+                        if (EnemyField[j, i] == CellType.Empty)
+                            yield return new Point(j, i);
+                        else continue;
                     }
                     //левый верхний участок
                     for (int j = 1, i = 4; i > 0; j++, i--)
                     {
-                        yield return new Point(j, i);
+                        if (EnemyField[j, i] == CellType.Empty)
+                            yield return new Point(j, i);
+                        else continue;
                     }
                     //Правый нижний участок
                     for (int j = 7, i = 7; i > 6; j++, i--)
                     {
-                        yield return new Point(j, i);
+                        if (EnemyField[j, i] == CellType.Empty)
+                            yield return new Point(j, i);
+                        else continue;
                     }
                 }
                 else if (this.LastHitStatus == "HIT")
@@ -188,10 +190,7 @@ namespace Sharp_destroyer
                     LastHitStatus = "HIT";
 
                 }
-                else if (this.LastHitStatus == "KILL")
-                {
-
-                }
+                
             }
         }
 
