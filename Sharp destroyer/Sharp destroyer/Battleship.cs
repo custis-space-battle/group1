@@ -169,7 +169,7 @@ namespace Sharp_destroyer
                 }
                 else if (lastHitStatus == "HIT")
                 {
-                     return PointToHitWreckedShip(lastHitPoint);
+                     yield return PointToHitWreckedShip(lastHitPoint);
                 }
             }
         }
