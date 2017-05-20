@@ -13,6 +13,8 @@ namespace Sharp_destroyer
         public static Battleship _battleShip = new Battleship();
         public static string _outQueue = "group1";
         public static string _incQueue = "to_group1";
+        public static Point _lastHitPoint = null;
+
         static void Main(string[] args)
         {
             Console.WriteLine("Hello Space!!!");
@@ -70,7 +72,7 @@ namespace Sharp_destroyer
                 Console.WriteLine(res);
                 if (res == "HIT")
                 {
-                    _battleShip.
+                    _battleShip.PointToHitWreckedShip(_lastHitPoint);
                 }
 
             }
