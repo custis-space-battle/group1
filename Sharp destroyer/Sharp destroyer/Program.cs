@@ -54,6 +54,11 @@ namespace Sharp_destroyer
                 var point = _battleShip.GetPointToFire();
                 channel.BasicPublish(_outQueue, _outQueue, null, Encoding.UTF8.GetBytes(point.ToString()));
             }
+            else if (message.Contains("fire result"))
+            {
+                var res = FireResult.Values.First(x => message.Contains(x));
+
+            }
             else if (message.Contains("Error"))
             {
 
@@ -76,6 +81,10 @@ namespace Sharp_destroyer
         Ship,
         Wreck,
         Mine
+    }
+    public static class FireResult
+    {
+        public static string[] Values = new string[] { "MISS", "MISS_AGAIN", "HIT", "HIT_AGAIN", "KILL", "HIT_MINE" };
     }
 
 }
