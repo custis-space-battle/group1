@@ -15,7 +15,7 @@ namespace Sharp_destroyer
         public static string _incQueue = "to_group1";
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello world");
+            Console.WriteLine("Hello Space!!!");
             //устанавливаем соединение
             var connFactory = new ConnectionFactory { Uri = "amqp://group1:F3pgbj@91.241.45.69/debug" };
             var connection = connFactory.CreateConnection();
@@ -29,13 +29,10 @@ namespace Sharp_destroyer
             channel.QueueBind(_incQueue, _incQueue, _incQueue);
             channel.BasicConsume(_incQueue, true, consumer);
             //подписка
-            consumer.Received += (s,e) =>   ProcessIncomingMess(s,e,channel);
+            consumer.Received += (s,e) => ProcessIncomingMess(s,e,channel);
             //отправляем
             channel.BasicPublish(_outQueue, _outQueue, null, Encoding.UTF8.GetBytes("start:BOT1"));
-
-
             
-
             Console.ReadLine();
             //отписка, диспозим
             //consumer.Received -= ProcessIncomingMess;
@@ -47,16 +44,15 @@ namespace Sharp_destroyer
         {
             Console.WriteLine(Encoding.UTF8.GetString(e.Body));
             var message = Encoding.UTF8.GetString(e.Body);
-            Console.WriteLine("MESSAGE IS " + message);
+            //Console.WriteLine("MESSAGE IS " + message);
             if (message.Contains("prepare"))
             {
                 //расстановка
                 Console.WriteLine("Setting Ships");
                 channel.BasicPublish(_outQueue, _outQueue, null, Encoding.UTF8.GetBytes(_battleShip.SetUpShips()));
             }
-            else if (message.Contains("fire") && !message.Contains("result"))
+            else if (message.Contains("fire") && !message.Contains("result") && !message.Contains("winner"))
             {
-                
                 var point = _battleShip.GetPointToFire();
                 channel.BasicPublish(_outQueue, _outQueue, null, Encoding.UTF8.GetBytes(point.ToString()));
             }
@@ -81,7 +77,7 @@ namespace Sharp_destroyer
             else if (message.Contains("winner"))
             {
                 Console.ReadLine();
-                return;
+                //return;
             }
             //throw new NotImplementedException();
         }
