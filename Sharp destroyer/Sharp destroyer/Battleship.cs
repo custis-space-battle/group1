@@ -66,7 +66,7 @@ namespace Sharp_destroyer
         }
         
 
-        public Point PointToHitWreckedShip(Point LastHit)
+        public static Point PointToHitWreckedShip(Point LastHit)
         {
             if (LastHit!=null)
             {
@@ -155,10 +155,12 @@ namespace Sharp_destroyer
             {
                 if (this.LastHitStatus == "MISS" || this.LastHitStatus == "KILL")
                 {
+
                     if (this.LastHitStatus == "KILL")
                     {
                         HitPointsAroundShip();
                         WreckedShipPoints.Clear();
+                        EnemyField[LastHitPoint.X, LastHitPoint.Y] = CellType.Hitted;
                     }
                     //Проходим вторую линию снизу вверх. j - x координата, i - у координата
                     for (int j = 1, i = 8; i > 0; j++, i--)
@@ -238,6 +240,11 @@ namespace Sharp_destroyer
                     //        pointsToMakeHitted.Add(Battleship.LastHitPoint);
                     //    }
                     //}
+                    //foreach(var point in pointsToMakeHitted)
+                    //{
+                    //    EnemyField[point.X, point.Y] = CellType.Hitted;
+                    //}
+                    EnemyField[LastHitPoint.X, LastHitPoint.Y] = CellType.Hitted;
                     Point.MakePointsHitted(Battleship.EnemyField, pointsToMakeHitted);
                      yield return PointToHitWreckedShip(Battleship.LastHitPoint);
                     LastHitStatus = "HIT";
