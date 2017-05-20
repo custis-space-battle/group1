@@ -9,8 +9,8 @@ namespace Sharp_destroyer
 {
     class Battleship
     {
-        public CellType[,] OurField = new CellType[10, 10];
-        public CellType[,] EnemyField = new CellType[10, 10];
+        public CellType[,] OurField = (CellType[,])Array.CreateInstance(typeof(CellType), new int[] { 10, 10 }, new int[] { 1, 1 });
+        public CellType[,] EnemyField = (CellType[,])Array.CreateInstance(typeof(CellType), new int[] { 10, 10 }, new int[] { 1, 1 });
         public string SetUpShips()
         {
 
@@ -19,6 +19,8 @@ namespace Sharp_destroyer
         public Point PointToFire()
         {
             return new Point(1,1);
+            //Массив начинающийся с индекса 1
+            
         }
 
 
