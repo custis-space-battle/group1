@@ -8,9 +8,11 @@ namespace Sharp_destroyer
 {
     class Battleship
     {
-        public bool SetUpShips()
+        public CellType[,] OurField = new CellType[10, 10];
+        public string SetUpShips()
         {
-            return true;
+
+            return "";
         }
 
 
