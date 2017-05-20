@@ -12,16 +12,40 @@ namespace Sharp_destroyer
         //Массив начинающийся с индекса 1
         public CellType[,] OurField = (CellType[,])Array.CreateInstance(typeof(CellType), new int[] { 10, 10 }, new int[] { 1, 1 });
         public CellType[,] EnemyField = (CellType[,])Array.CreateInstance(typeof(CellType), new int[] { 10, 10 }, new int[] { 1, 1 });
+
+        Random r = new Random();
+
+        public Battleship()
+        {
+            for (int i=1; i<=10; i++)
+            {
+                for (int j = 1; j <= 10; j++)
+                {
+                    EnemyField[i, j] = CellType.Empty;
+                    //Console.WriteLine($"Setted {i}, {j} as Empty");
+                }
+            }
+        }
+
         public string SetUpShips()
         {
 
             return "1,1; 1,1";
         }
-        public Point GetPointToFire()
+        
+        public Point GetPointToFire(string status = "")
         {
-            return new Point(1,1);
+            //обработка строки
+            //var splitted = status.Split(new char[] { ':' });
+
+            //рандом
+            var point = new Point(r.Next(1,10), r.Next(1, 10));
+
+            return point;
+            //Массив начинающийся с индекса 1
             
         }
+        
 
 
     }
