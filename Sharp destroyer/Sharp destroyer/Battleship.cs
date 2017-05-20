@@ -6,12 +6,7 @@ using System.Threading.Tasks;
 
 namespace Sharp_destroyer
 {
-    class Program
+    class Battleship
     {
-        static void Main(string[] args)
-        {
-            Console.WriteLine("Hello world");
-            Console.ReadLine();
-        }
     }
 }
