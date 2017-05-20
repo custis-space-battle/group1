@@ -53,13 +53,25 @@ namespace Sharp_destroyer
             }
             else if (message == "fire!")
             {
-                var point = _battleShip.GetPointToFire();
+                Point point = null;
+                if (SpecialEvent.Exist)
+                {
+
+                }
+                else
+                {
+                    point = _battleShip.GetPointToFire();
+                }
                 channel.BasicPublish(_outQueue, _outQueue, null, Encoding.UTF8.GetBytes(point.ToString()));
             }
-            else if (message=="fire result")
+            else if (message.Contains("fire result"))
             {
                 var res = FireResult.Values.First(x => message.Contains(x));
                 Console.WriteLine(res);
+                if (res == "HIT")
+                {
+                    _battleShip.
+                }
 
             }
             else if (message.Contains("Error"))
@@ -94,6 +106,16 @@ namespace Sharp_destroyer
     public static class FireResult
     {
         public static string[] Values = new string[] { "MISS", "MISS_AGAIN", "HIT", "HIT_AGAIN", "KILL", "HIT_MINE" };
+    }
+    public static class SpecialEvent
+    {
+        public static bool Exist { get; set; }
+        public static SpecialCondition Condition { get; set; }
+    }
+    public enum SpecialCondition
+    {
+        Wrecked,
+        HasBigGun
     }
 
 }
