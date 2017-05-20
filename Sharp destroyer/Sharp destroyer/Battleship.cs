@@ -32,13 +32,39 @@ namespace Sharp_destroyer
             return "1,1; 1,1";
         }
         
-        public Point GetPointToFire(string status = "")
+        public Point GetPointToFire()
         {
             //обработка строки
             //var splitted = status.Split(new char[] { ':' });
 
             //рандом
+            int count = 0;
             var point = new Point(r.Next(1,10), r.Next(1, 10));
+
+            for (int i = 1; i <= 10; i++)
+            {
+                for (int j = 1; j <= 10; j++)
+                {
+                    if (EnemyField[point.X, point.Y] == CellType.Hitted)
+                    {
+                        count++;
+                        if (count > 101)
+                        {
+                            return GetPointToFire();
+                        }
+                        else
+                        {
+                            return point;
+                        }
+                    }
+                    else
+                    {
+                        return point;
+                    }
+                    //Console.WriteLine($"Setted {i}, {j} as Empty");
+                }
+            }
+            EnemyField[point.X, point.Y] = CellType.Hitted;
 
             return point;
             //Массив начинающийся с индекса 1

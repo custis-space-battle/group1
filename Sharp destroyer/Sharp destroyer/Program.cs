@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace Sharp_destroyer
 {
     class Program
@@ -15,7 +16,7 @@ namespace Sharp_destroyer
         public static string _incQueue = "to_group1";
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello world");
+       //     Console.WriteLine("Hello world");
             //устанавливаем соединение
             var connFactory = new ConnectionFactory { Uri = "amqp://group1:F3pgbj@91.241.45.69/debug" };
             var connection = connFactory.CreateConnection();
@@ -31,23 +32,19 @@ namespace Sharp_destroyer
             //подписка
             consumer.Received += (s,e) =>   ProcessIncomingMess(s,e,channel);
             //отправляем
-            channel.BasicPublish(_outQueue, _outQueue, null, Encoding.UTF8.GetBytes("start:BOT1"));
-
-
-            
+            channel.BasicPublish(_outQueue, _outQueue, null, Encoding.UTF8.GetBytes("start:SELF"));
 
             Console.ReadLine();
             //отписка, диспозим
             //consumer.Received -= ProcessIncomingMess;
-            connection?.Dispose();
-            channel?.Dispose();
+            connection.Dispose();
+            channel.Dispose();
         }
 
         private static void ProcessIncomingMess(object sender, BasicDeliverEventArgs e, IModel channel)
         {
             Console.WriteLine(Encoding.UTF8.GetString(e.Body));
             var message = Encoding.UTF8.GetString(e.Body);
-            Console.WriteLine("MESSAGE IS " + message);
             if (message.Contains("prepare"))
             {
                 //расстановка
