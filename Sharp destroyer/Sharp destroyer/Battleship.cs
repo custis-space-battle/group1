@@ -73,22 +73,23 @@ namespace Sharp_destroyer
 
             else if (WreckedShipPoints.Count == 1)
             {
-                foreach (Point p in WreckedShipPoints)
-                {
-                    for (int i = -1; i < 1; i++)
-                    {
-                        for (int j = -1; j < 1; j++)
-                        {
-                            if (Math.Abs(i) != Math.Abs(j) && p.X + i <= 10 && p.X + i >= 1 && p.Y + j <= 10 && p.Y + j >= 1)
-                            {
-                                if (EnemyField[p.X + i, p.Y + j] == CellType.Empty)
-                                {
-                                    return new Point(p.X + i, p.Y + j);
-                                }
-                            }
-                        }
-                    }
-                }
+                
+                //foreach (Point p in WreckedShipPoints)
+                //{
+                //    for (int i = -1; i < 1; i++)
+                //    {
+                //        for (int j = -1; j < 1; j++)
+                //        {
+                //            if (Math.Abs(i) != Math.Abs(j) && p.X + i <= 10 && p.X + i >= 1 && p.Y + j <= 10 && p.Y + j >= 1)
+                //            {
+                //                if (EnemyField[p.X + i, p.Y + j] == CellType.Empty)
+                //                {
+                //                    return new Point(p.X + i, p.Y + j);
+                //                }
+                //            }
+                //        }
+                //    }
+                //}
             }
 
             else
@@ -168,7 +169,7 @@ namespace Sharp_destroyer
                 }
                 else if (lastHitStatus == "HIT")
                 {
-                 //    return PointToHitWreckedPoint(lastHitPoint);
+                     return PointToHitWreckedShip(lastHitPoint);
                 }
             }
         }
