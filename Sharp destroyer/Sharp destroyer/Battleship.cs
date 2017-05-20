@@ -16,7 +16,7 @@ namespace Sharp_destroyer
 
             return "1,1; 1,1";
         }
-        public Point PointToFire()
+        public Point GetPointToFire()
         {
             return new Point(1,1);
             //Массив начинающийся с индекса 1
