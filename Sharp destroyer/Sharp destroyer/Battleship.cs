@@ -14,7 +14,8 @@ namespace Sharp_destroyer
         public static CellType[,] EnemyField = (CellType[,])Array.CreateInstance(typeof(CellType), new int[] { 10, 10 }, new int[] { 1, 1 });
         public static List<Point> WreckedShipPoints = new List<Point>();
         public static Point LastHitPoint;
-        public string LastHitStatus = "MISS";
+        public static string LastHitStatus = "MISS";
+
 
         Random r = new Random();
 
@@ -65,8 +66,14 @@ namespace Sharp_destroyer
         }
         
 
-        public Point PointToHitWreckedShip(Point LastHit)
+        public static Point PointToHitWreckedShip(Point LastHit)
         {
+            if (LastHit!=null)
+            {
+                WreckedShipPoints.Add(LastHit);
+            }
+            
+
             if (WreckedShipPoints.Count == 0)
             {
                 return null;
@@ -74,12 +81,12 @@ namespace Sharp_destroyer
 
             else if (WreckedShipPoints.Count == 1)
             {
-
                 foreach (Point p in WreckedShipPoints)
                 {
-                    for (int i = -1; i < 1; i++)
+                    
+                    for (int i = -1; i <= 1; i++)
                     {
-                        for (int j = -1; j < 1; j++)
+                        for (int j = -1; j <= 1; j++)
                         {
                             if (Math.Abs(i) != Math.Abs(j) && p.X + i <= 10 && p.X + i >= 1 && p.Y + j <= 10 && p.Y + j >= 1)
                             {
@@ -117,16 +124,20 @@ namespace Sharp_destroyer
                     var targetY = WreckedShipPoints.Min(x => x.Y);
                     var targetX = WreckedShipPoints.Min(x => x.X);
                     Point pt = new Point(targetX , targetY-1);
-                    if (EnemyField[pt.X, pt.Y] == CellType.Empty)
+                    if (pt.X<=10 && pt.X>=1 && pt.Y>=1 && pt.Y<=10)
                     {
-                        return pt;
+                        if (EnemyField[pt.X, pt.Y] == CellType.Empty)
+                        {
+                            return pt;
+                        }
+                        else
+                        {
+                            targetY = WreckedShipPoints.Max(x => x.Y);
+                            pt = new Point(targetX, targetY + 1);
+                            return pt;
+                        }
                     }
-                    else
-                    {
-                        targetY = WreckedShipPoints.Max(x => x.Y);
-                        pt = new Point(targetX, targetY+1);
-                        return pt;
-                    }
+                    
                 }
 
             }
@@ -142,10 +153,15 @@ namespace Sharp_destroyer
             }
             else
             {
-                if (this.LastHitStatus == "MISS" || this.LastHitStatus == "KILL")
+                if (LastHitStatus == "MISS" || LastHitStatus == "KILL")
                 {
-                    if (this.LastHitStatus == "KILL")
+
+                    if (LastHitStatus == "KILL")
+                    {
                         HitPointsAroundShip();
+                        WreckedShipPoints.Clear();
+                        EnemyField[LastHitPoint.X, LastHitPoint.Y] = CellType.Hitted;
+                    }
                     //Проходим вторую линию снизу вверх. j - x координата, i - у координата
                     for (int j = 1, i = 8; i > 0; j++, i--)
                     {
@@ -174,12 +190,13 @@ namespace Sharp_destroyer
                             yield return new Point(j, i);
                         else continue;
                     }
-                    //
-                    for (int j = 7, i = 7; i > 6; j++, i--)
+                    //Обработка жёлтых диагоналей
+                    for (int j = 1;j<=10;j= j+4)
                     {
-                        if (EnemyField[j, i] == CellType.Empty)
+                        for (int i = 2;i>=10; i= i+4)
+                        {
                             yield return new Point(j, i);
-                        else continue;
+                        }
                     }
                     // Добиваем не пройденные точки
                     for (int i = 1; i <= 10; i++)
@@ -193,10 +210,8 @@ namespace Sharp_destroyer
                             }
                         }
                     }
-
-                    
                 }
-                else if (this.LastHitStatus == "HIT")
+                else if (LastHitStatus == "HIT")
                 {
                     List<Point> pointsToMakeHitted = new List<Point>();
                     var x = Battleship.LastHitPoint.X;
@@ -223,6 +238,11 @@ namespace Sharp_destroyer
                     //        pointsToMakeHitted.Add(Battleship.LastHitPoint);
                     //    }
                     //}
+                    //foreach(var point in pointsToMakeHitted)
+                    //{
+                    //    EnemyField[point.X, point.Y] = CellType.Hitted;
+                    //}
+                    EnemyField[LastHitPoint.X, LastHitPoint.Y] = CellType.Hitted;
                     Point.MakePointsHitted(Battleship.EnemyField, pointsToMakeHitted);
                      yield return PointToHitWreckedShip(Battleship.LastHitPoint);
                     LastHitStatus = "HIT";

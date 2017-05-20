@@ -14,6 +14,9 @@ namespace Sharp_destroyer
         public static string _outQueue = "group1";
         public static string _incQueue = "to_group1";
         public static Point _lastHitPoint = null;
+        public static IEnumerator<Point> _enumerator;
+        public static Point NextShootPoint;
+        public static Point point = null;
 
         static void Main(string[] args)
         {
@@ -30,10 +33,12 @@ namespace Sharp_destroyer
             channel.QueueDeclare(_incQueue, exclusive: false);
             channel.QueueBind(_incQueue, _incQueue, _incQueue);
             channel.BasicConsume(_incQueue, true, consumer);
+
+            _enumerator = _battleShip.GetPointToFireEvgeny().GetEnumerator();
             //подписка
             consumer.Received += (s,e) => ProcessIncomingMess(s,e,channel);
             //отправляем
-            channel.BasicPublish(_outQueue, _outQueue, null, Encoding.UTF8.GetBytes("start:BOT1"));
+            channel.BasicPublish(_outQueue, _outQueue, null, Encoding.UTF8.GetBytes("start:USUAL"));
             
             Console.ReadLine();
             //отписка, диспозим
@@ -46,6 +51,7 @@ namespace Sharp_destroyer
         {
             Console.WriteLine(Encoding.UTF8.GetString(e.Body));
             var message = Encoding.UTF8.GetString(e.Body);
+           
             //Console.WriteLine("MESSAGE IS " + message);
             if (message.Contains("prepare"))
             {
@@ -53,22 +59,31 @@ namespace Sharp_destroyer
                 Console.WriteLine("Setting Ships");
                 channel.BasicPublish(_outQueue, _outQueue, null, Encoding.UTF8.GetBytes(_battleShip.SetUpShips()));
             }
-            else if (message == "fire!")
+            else if (message.Contains("fire!"))
             {
-                Point point = null;
+                
                 if (SpecialEvent.Exist)
                 {
 
                 }
                 else
                 {
-
-                    var enumerator = _battleShip.GetPointToFireEvgeny().GetEnumerator();
-                    if (enumerator.MoveNext())
-                        point = enumerator.Current;
-                               channel.BasicPublish(_outQueue, _outQueue, null, Encoding.UTF8.GetBytes(point.ToString()));
-
+                    //var enumerator = _battleShip.GetPointToFireEvgeny().GetEnumerator();
+                    if (_enumerator.MoveNext())
+                    {
+                        if (NextShootPoint != null && NextShootPoint!=point)
+                        {
+                            point = NextShootPoint;
+                        }
+                        else
+                        {
+                            point = _enumerator.Current;
+                        }
+                        channel.BasicPublish(_outQueue, _outQueue, null, Encoding.UTF8.GetBytes(point.ToString()));
+                        //Battleship.EnemyField[point.X, point.Y] = CellType.Hitted;
+                    }
                 }
+                
             }
             else if (message.Contains("fire result"))
             {
@@ -76,7 +91,11 @@ namespace Sharp_destroyer
                 Console.WriteLine(res);
                 if (res == "HIT")
                 {
-                    _battleShip.PointToHitWreckedShip(_lastHitPoint);
+                    Battleship.LastHitPoint = point;
+                    Battleship.LastHitStatus = "HIT";
+                    Console.WriteLine("HITTED!!!!!!!!!!!!!");
+                    NextShootPoint = Battleship.PointToHitWreckedShip(_lastHitPoint);
+                    Console.WriteLine($"Next point to shoot {NextShootPoint.ToString()}");
                 }
 
             }
@@ -115,7 +134,7 @@ namespace Sharp_destroyer
     }
     public static class SpecialEvent
     {
-        public static bool Exist { get; set;} = false;
+        public static bool Exist { get; set; } = false;
         public static SpecialCondition Condition { get; set; }
     }
     public enum SpecialCondition
