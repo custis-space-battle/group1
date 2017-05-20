@@ -14,6 +14,7 @@ namespace Sharp_destroyer
         public static string _outQueue = "group1";
         public static string _incQueue = "to_group1";
         public static Point _lastHitPoint = null;
+        public static IEnumerator<Point> _enumerator;
 
         static void Main(string[] args)
         {
@@ -30,6 +31,8 @@ namespace Sharp_destroyer
             channel.QueueDeclare(_incQueue, exclusive: false);
             channel.QueueBind(_incQueue, _incQueue, _incQueue);
             channel.BasicConsume(_incQueue, true, consumer);
+
+            _enumerator = _battleShip.GetPointToFireEvgeny().GetEnumerator();
             //подписка
             consumer.Received += (s,e) => ProcessIncomingMess(s,e,channel);
             //отправляем
@@ -53,7 +56,7 @@ namespace Sharp_destroyer
                 Console.WriteLine("Setting Ships");
                 channel.BasicPublish(_outQueue, _outQueue, null, Encoding.UTF8.GetBytes(_battleShip.SetUpShips()));
             }
-            else if (message == "fire!")
+            else if (message.Contains("fire!"))
             {
                 Point point = null;
                 if (SpecialEvent.Exist)
@@ -63,10 +66,10 @@ namespace Sharp_destroyer
                 else
                 {
 
-                    var enumerator = _battleShip.GetPointToFireEvgeny().GetEnumerator();
-                    if (enumerator.MoveNext())
+                    //var enumerator = _battleShip.GetPointToFireEvgeny().GetEnumerator();
+                    if (_enumerator.MoveNext())
                     {
-                        point = enumerator.Current;
+                        point = _enumerator.Current;
                         channel.BasicPublish(_outQueue, _outQueue, null, Encoding.UTF8.GetBytes(point.ToString()));
                     }
                 }
