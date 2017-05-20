@@ -44,32 +44,23 @@ namespace Sharp_destroyer
             int count = 0;
             var point = new Point(r.Next(1,10), r.Next(1, 10));
 
-            for (int i = 1; i <= 10; i++)
+            if (EnemyField[point.X, point.Y] == CellType.Hitted)
             {
-                for (int j = 1; j <= 10; j++)
+                count++;
+                if (count > 101)
                 {
-                    if (EnemyField[point.X, point.Y] == CellType.Hitted)
-                    {
-                        count++;
-                        if (count > 101)
-                        {
-                            return GetPointToFire();
-                        }
-                        else
-                        {
-                            return point;
-                        }
-                    }
-                    else
-                    {
-                        return point;
-                    }
-                    //Console.WriteLine($"Setted {i}, {j} as Empty");
+                    return GetPointToFire();
+                }
+                else
+                {
+                    return point;
                 }
             }
-            EnemyField[point.X, point.Y] = CellType.Hitted;
-
-            return point;
+            else
+            {
+                EnemyField[point.X, point.Y] = CellType.Hitted;
+                return point;
+            }
             //Массив начинающийся с индекса 1
         }
 

@@ -36,8 +36,8 @@ namespace Sharp_destroyer
             Console.ReadLine();
             //отписка, диспозим
             //consumer.Received -= ProcessIncomingMess;
-            connection?.Dispose();
-            channel?.Dispose();
+            connection.Dispose();
+            channel.Dispose();
         }
 
         private static void ProcessIncomingMess(object sender, BasicDeliverEventArgs e, IModel channel)
