@@ -36,5 +36,6 @@ namespace Sharp_destroyer
         {
             return X.ToString() + "," + Y.ToString();
         }
+
     }
 }
